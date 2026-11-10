@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conexiones//Colectivas</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#F2EFE6;--card:#ffffff;--paper:#0A0A10;--acid:#3F7A00;--mag:#D6126B;--cyan:#0A7FA0;--yel:#A86F00;--gris:#5c5c68;--on:#ffffff;--fs:1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0A10;--card:#10101a;--paper:#F2EFE6;--acid:#C6FF3D;--mag:#FF2E88;--cyan:#2EE6FF;--yel:#FFD23F;--gris:#8A8A99;--on:#0A0A10}}
+:root[data-hc="1"]{--bg:#000000;--card:#000000;--paper:#ffffff;--acid:#ffff00;--mag:#ff66ff;--cyan:#00ffff;--yel:#ffaa00;--gris:#dddddd;--on:#000000}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--paper);font:calc(16px*var(--fs))/1.45 Arial,sans-serif;padding-bottom:48px;overflow-x:hidden}
+.mono,.btn,input,textarea{font-family:"Courier New",monospace}
+.a{color:var(--acid)}.m{color:var(--mag)}.c{color:var(--cyan)}.y{color:var(--yel)}.g{color:var(--gris)}
+h1,h2,h3{font-family:"Arial Black",Arial,sans-serif;margin:0;font-weight:900}
+h1{font-size:clamp(40px,8vw,86px);line-height:.98}h2{font-size:30px}h3{font-size:14px;font-family:"Courier New",monospace;border-bottom:1px solid var(--gris);padding-bottom:8px;margin:0 0 12px}
+.mono{font-size:13px;margin:6px 0}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:2px solid var(--paper);padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.logo{font:900 17px/1.05 "Arial Black",Arial,sans-serif;margin-right:12px}
+nav{display:flex;flex-wrap:wrap;gap:6px;flex:1}
+.btn{--k:var(--paper);color:var(--k);border:2px solid var(--k);background:transparent;padding:8px 12px;font-weight:700;font-size:13px;text-transform:uppercase;cursor:pointer}
+.btn.a{--k:var(--acid)}.btn.m{--k:var(--mag)}.btn.c{--k:var(--cyan)}.btn.y{--k:var(--yel)}
+.btn:hover,.btn.fill,.btn.sel{background:var(--k);color:var(--on)}
+.btn.big{padding:14px 22px;font-size:15px}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+main{padding:20px 16px;max-width:1280px;margin:0 auto}
+.hero{max-width:760px}.hero .row{display:flex;gap:10px;margin:22px 0 12px;flex-wrap:wrap}
+.hero input{flex:1;min-width:200px;font:900 28px "Arial Black",Arial,sans-serif}
+input,textarea{background:var(--card);color:var(--paper);border:3px solid var(--acid);padding:12px;font-size:calc(16px*var(--fs));width:100%}
+textarea{height:220px;resize:vertical;font-family:Arial,sans-serif}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.split{display:grid;grid-template-columns:2fr 1fr;gap:24px}
+@media(max-width:820px){.cols,.split{grid-template-columns:1fr}}
+aside{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.q{border-left:4px solid var(--gris);padding:4px 0 8px 12px;margin:10px 0}.q p{margin:2px 0 8px}.q .btn{margin-right:8px;min-width:80px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}.bar input{max-width:320px;border-color:var(--cyan)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.card{background:var(--card);border:1.5px solid var(--gris);border-left:8px solid var(--mag);padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.card:nth-child(even){border-left-color:var(--acid)}
+.card p{margin:0}.tag{background:var(--yel);color:var(--on);padding:1px 6px;font-size:11px;font-weight:700}
+mark{background:var(--acid);color:var(--on);padding:0 2px}
+.sq{display:inline-grid;place-items:center;width:22px;height:22px;margin-right:6px;font:700 12px "Courier New",monospace;color:var(--on);background:var(--gris)}
+.sq.s{background:var(--acid)}.sq.n{background:var(--mag)}
+.kw{background:none;border:0;color:var(--acid);font:700 13px "Courier New",monospace;cursor:pointer;padding:2px 4px}.kw:hover{color:var(--mag)}
+#cv{width:100%;height:min(68vh,640px);display:block;border:1px solid var(--gris);background:var(--card);touch-action:none}
+#tip{min-height:24px;font-size:14px;margin:6px 0;color:var(--yel)}
+.panel{border:1px solid var(--gris);background:var(--card);padding:14px;display:flex;flex-direction:column;gap:8px}
+.big-n{font:900 76px/1 "Arial Black",Arial,sans-serif}
+.bars div.r{display:grid;grid-template-columns:110px 1fr 36px;gap:8px;align-items:center;margin:6px 0;font-size:15px}
+.bars i{display:block;height:20px}
+.yn{height:18px;display:flex;margin:4px 0 12px}.yn b{display:grid;align-items:center;font:700 11px "Courier New",monospace;color:var(--on);padding:0 6px;overflow:hidden}
+.dots{display:flex;flex-wrap:wrap;gap:6px}.dots i{width:22px;height:22px;border-radius:50%;display:block;outline:2px solid var(--gris)}
+svg{max-width:100%;height:auto;display:block}svg text{font-family:"Courier New",monospace}
+#tick{position:fixed;left:0;right:0;bottom:0;background:var(--acid);color:var(--on);font:700 14px "Courier New",monospace;overflow:hidden;white-space:nowrap;padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:6}
+#tick span{display:inline-block;padding-left:100%;animation:mq 45s linear infinite}@keyframes mq{to{transform:translateX(-100%)}}
+#toast{position:fixed;left:50%;top:76px;transform:translateX(-50%);background:var(--mag);color:var(--on);font:700 14px "Courier New",monospace;padding:10px 16px;z-index:9;display:none;max-width:90vw;text-align:center}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;place-items:center;z-index:8;padding:16px}
+#modal .box{background:var(--bg);border:3px solid var(--yel);padding:22px;max-width:620px;width:100%;display:flex;flex-direction:column;gap:12px}
+.conf{position:fixed;width:9px;height:9px;z-index:9;pointer-events:none;animation:cf 1.6s ease-out forwards}
+@keyframes cf{to{transform:translate(var(--x),var(--y)) rotate(540deg);opacity:0}}
+.kiosk header .tools,.kiosk header nav{display:none}.kiosk main{padding-top:30px}
+.kiosk header::after{content:"ACÉRCATE  //  APORTA  //  TOCA PARA SALIR";font:700 14px "Courier New",monospace;color:var(--yel);margin-left:auto}
+@media (prefers-reduced-motion:reduce){#tick span{animation:none;padding-left:12px}.conf{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">CONEXIONES<br><span class="a">COLECTIVAS</span></div>
+  <nav id="nav"></nav>
+  <div class="tools" style="display:flex;gap:6px;flex-wrap:wrap">
+    <button class="btn c" data-a="ciclo" id="btnTema"></button>
+    <button class="btn" data-a="kiosco" title="Modo kiosco / proyección">K</button>
+    <button class="btn y" data-a="hc" title="Alto contraste">HC</button>
+    <button class="btn" data-a="fs" data-d="-0.1" aria-label="Texto más pequeño">A-</button>
+    <button class="btn" data-a="fs" data-d="0.1" aria-label="Texto más grande">A+</button>
+    <button class="btn a" data-a="csv">CSV</button>
+  </div>
+</header>
+<main id="app"></main>
+<div id="tick"></div><div id="toast" role="status"></div><div id="modal"></div>
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LS={g:(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v??d}catch(e){return d}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const PREG=["¿Habías escuchado hablar de {t} antes?","¿Crees que {t} conecta ciencia, arte y tecnología?","¿Te gustaría crear una obra o experimento sobre {t}?","¿Debería enseñarse {t} en tu institución?","¿Ves riesgos éticos en {t}?"];
+const NQ=PREG.length,pq=i=>PREG[i].replace("{t}",S.tema);
+const STOP=new Set("para como pero porque cuando donde desde hasta entre sobre tambien esta este estos estas esto eso esa ese esos esas aqui alli muy mas menos pues tiene tienen hacer hace puede pueden cada todo todos toda todas otro otra otros otras son era fue hay sido sus los las del una uno unos unas por con sin que mis nos les algo solo asi tanto tan bien quien cual creo quisiera gustaria mucho muchos mucha muchas poco hacia segun durante mismo misma ante bajo tipo forma parte ser estar tener tengo sino aunque mientras luego siempre nunca ahora entonces puedo podria deberia vez veces cosa cosas estan".split(" "));
+const norm=s=>s.normalize("NFD").replace(/\p{M}/gu,"");
+const raiz=w=>{let s=norm(w.toLowerCase());if(s.endsWith("ciones"))return s.slice(0,-6)+"cion";if(s.length>5&&/(ores|ones|ales|ares|ices|udes)$/.test(s))return s.slice(0,-2);if(s.length>4&&s.endsWith("s"))return s.slice(0,-1);return s};
+const DISP={},lab=r=>DISP[r]||r;
+function pals(txt,tema){const ex=new Set((tema||"").split(/\s+/).map(raiz)),out=new Set();for(const w of (txt||"").toLowerCase().replace(/[^\p{L}]+/gu," ").split(" ")){if(w.length<4||STOP.has(norm(w)))continue;const r=raiz(w);if(r.length<3||ex.has(r))continue;out.add(r);if(!DISP[r]||w.length<DISP[r].length)DISP[r]=w}return out}
+const PM=new WeakMap(),P=a=>{let p=PM.get(a);if(!p){p=pals((a.texto||"")+" "+(a.dato||""),a.tema);PM.set(a,p)}return p};
+const cl=(v,a,b)=>Math.min(b,Math.max(a,v)),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const C=n=>getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
+const hex=c=>[1,3,5].map(i=>parseInt(c.substr(i,2),16)),mix=(a,b,t)=>{const x=hex(a),y=hex(b);return"rgb("+x.map((v,i)=>Math.round(v+(y[i]-v)*t)).join(",")+")"};
+const sies=a=>{const k=(a.resp||[]).filter(x=>x>=0);return k.length?k.filter(x=>x===1).length/k.length:-1};
+
+/* ---------- estado y datos ---------- */
+let S={tema:LS.g("cc_tema","bioarte"),v:"inicio",ap:[],vi:[],resp:Array(NQ).fill(-1),buscar:"",modoRed:"PALABRAS",conectando:false,selA:null,kiosco:false,draft:{tx:"",da:""}};
+let dbAp=[],dbVi=[],DB=null,cargado=false,pend={ap:LS.g("cc_ap",[]),vi:LS.g("cc_vi",[])};
+const BASE=LS.g("cc_visita",{});
+const uniq=a=>[...new Map(a.map(x=>[x.id,x])).values()];
+function merge(){S.ap=uniq(dbAp.concat(pend.ap)).sort((a,b)=>a.t-b.t);S.ap.forEach(P);S.vi=uniq(dbVi.concat(pend.vi)).sort((a,b)=>a.t-b.t)}
+const freq=L=>{const f=new Map();L.forEach(a=>P(a).forEach(w=>f.set(w,(f.get(w)||0)+1)));return f};
+const ord=f=>[...f.keys()].sort((a,b)=>f.get(b)-f.get(a)||a.localeCompare(b));
+const delTema=()=>S.ap.filter(a=>a.tema===S.tema),vincT=()=>S.vi.filter(v=>v.tema===S.tema);
+const claves=(L=delTema())=>{const f=freq(L);return ord(f).filter(w=>f.get(w)>=2)};
+const temas=()=>[...new Set(S.ap.map(a=>a.tema))];
+function diff(){const b=BASE[S.tema];if(!b)return{primera:true};const L=delTema(),f=freq(L),nc=ord(f).filter(w=>f.get(w)>=2&&!(b.claves||[]).includes(w)),da=Math.max(0,L.length-b.n),dv=Math.max(0,vincT().length-b.v);return{da,dv,nc,hay:da||dv||nc.length}}
+function guardarVisita(){if(!cargado)return;const o={...BASE};temas().forEach(t=>{const L=S.ap.filter(a=>a.tema===t),f=freq(L);o[t]={t:Date.now(),n:L.length,v:S.vi.filter(v=>v.tema===t).length,claves:[...f.keys()].filter(w=>f.get(w)>=2)}});LS.s("cc_visita",o)}
+async function guardar(col,obj,demo){
+  const k=col==="aportes"?"ap":"vi";
+  if(demo)obj.demo=true;
+  pend[k].push(obj);LS.s("cc_"+k,pend[k]);merge();
+  if(demo)return true;
+  if(DB){try{await DB.collection(col).doc(obj.id).set(obj);pend[k]=pend[k].filter(x=>x.id!==obj.id);LS.s("cc_"+k,pend[k]);return true}catch(e){toast("Se guardó solo en tu navegador: tu acceso no permite escribir en la red compartida");return false}}
+  toast("Sin conexión con la red compartida: guardado en tu navegador");return false}
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display="none",3200)}
+function burst(){for(let i=0;i<60;i++){const s=document.createElement("span");s.className="conf";s.style.cssText=`left:50%;top:40%;background:${C(["acid","mag","cyan","yel"][i%4])};--x:${(Math.random()-.5)*700}px;--y:${(Math.random()-.3)*600}px`;document.body.appendChild(s);setTimeout(()=>s.remove(),1700)}}
+
+/* ---------- navegación ---------- */
+const TABS=[["inicio","INICIO"],["participar","PARTICIPAR"],["aportes","APORTES"],["red","RED"],["datos","DATOS"],["tiempo","TIEMPO"]];
+function go(v){S.v=v;S.conectando=false;S.selA=null;cancelAnimationFrame(G.raf);render();window.scrollTo(0,0)}
+function render(){
+  $("#nav").innerHTML=TABS.map(([k,n])=>`<button class="btn ${k===S.v?"fill a":""}" data-a="go" data-v="${k}">${n}</button>`).join("");
+  $("#btnTema").textContent="TEMA: "+S.tema.slice(0,14).toUpperCase()+" ›";
+  ({inicio,participar,aportes,red,datos,tiempo})[S.v]($("#app"));
+  const t=`<span>${esc(S.tema.toUpperCase())} // ${delTema().length} APORTES // ${claves().map(w=>esc(lab(w).toUpperCase())).join(" * ")}</span>`;
+  if($("#tick").dataset.t!==t){$("#tick").innerHTML=t;$("#tick").dataset.t=t}
+}
+function refresh(){
+  const ae=document.activeElement,typing=ae&&["INPUT","TEXTAREA"].includes(ae.tagName);
+  if(S.v==="participar"){live();return}
+  if(S.v==="aportes"&&ae&&ae.id==="bq"){pintaGrid();return}
+  if(typing)return;render()}
+const vacio=A=>{A.innerHTML=`<div style="text-align:center;padding:60px 0"><h2>AÚN NO HAY APORTES SOBRE</h2><h1 class="a">${esc(S.tema.toUpperCase())}</h1><p><button class="btn m fill big" data-a="go" data-v="participar">SÉ LA PRIMERA PERSONA ›</button></p></div>`};
+
+/* ---------- INICIO ---------- */
+function inicio(A){
+  const ts=temas(),hayDemo=S.ap.some(a=>a.demo);
+  A.innerHTML=`<div class="split"><section class="hero"><h1>¿SOBRE QUÉ<br><span class="a">CONVERSAMOS</span><br><span class="m">HOY?</span></h1>
+  <div class="row"><input id="tema" value="${esc(S.tema)}" maxlength="40" aria-label="Tema" placeholder="bioarte, inteligencia artificial..."><button class="btn m fill big" data-a="entrar">ENTRAR ›</button></div>
+  <div class="chips">${["bioarte","biotecnología","inteligencia artificial","arte sonoro","ecología"].map(s=>`<button class="btn c" data-a="tema" data-t="${s}">${s}</button>`).join("")}</div>
+  <p id="est" class="mono c"></p></section>
+  <aside><h3>TEMAS EN LA RED</h3>${ts.length?ts.map(t=>`<button class="btn m" data-a="ver" data-t="${esc(t)}">${esc(t.toUpperCase())} (${S.ap.filter(a=>a.tema===t).length})</button>`).join(""):`<p class="g">Aún no hay aportes guardados.</p>`}
+  <button class="btn y" data-a="sembrar">${hayDemo?"QUITAR EJEMPLOS":"CARGAR EJEMPLOS (SOLO EN TU NAVEGADOR)"}</button>
+  <p class="mono g">${DB?"Red compartida activa: todas las personas ven los mismos aportes.":"Modo local: tus aportes se guardan solo en este navegador."}</p></aside></div>`;
+  const i=$("#tema"),est=()=>{const t=i.value.trim().toLowerCase(),L=S.ap.filter(a=>a.tema===t),f=freq(L);$("#est").textContent=!t?"":L.length?`YA HAY ${L.length} APORTES Y ${[...f.values()].filter(c=>c>=2).length} PUNTOS CLAVE EN ESTE TEMA`:"TEMA NUEVO: SERÁS LA PRIMERA PERSONA EN APORTAR"};
+  i.oninput=est;i.onkeydown=e=>{if(e.key==="Enter")ACT.entrar()};est()}
+
+/* ---------- PARTICIPAR ---------- */
+function participar(A){
+  A.innerHTML=`<div class="cols"><section><p class="mono g">TEMA ACTUAL</p><h2 class="a">${esc(S.tema.toUpperCase())}</h2>
+  <p class="mono"><label for="tx">TU IDEA U OPINIÓN</label></p><textarea id="tx" maxlength="600" placeholder="Escribe aquí lo que piensas, sabes o te preguntas sobre ${esc(S.tema)}..."></textarea>
+  <p class="mono"><label for="da">APORTA UN DATO, FUENTE O REFERENCIA (opcional)</label></p><input id="da" maxlength="160" style="border-color:var(--cyan)">
+  <p class="mono">TU TEXTO YA SE CONECTA CON:</p><p id="live" class="mono"></p></section>
+  <section><p class="mono">RESPONDE (SÍ / NO)</p>${PREG.map((q,i)=>`<div class="q"><span class="mono ${i%2?"c":"m"}">Q${i+1}</span><p>${esc(pq(i))}</p><button class="btn a" data-a="resp" data-i="${i}" data-v="1">SÍ</button><button class="btn m" data-a="resp" data-i="${i}" data-v="0">NO</button></div>`).join("")}
+  <p id="cnt" class="mono g"></p><button class="btn a fill big" data-a="enviar">ENVIAR APORTE ›</button></section></div>`;
+  $("#tx").value=S.draft.tx;$("#da").value=S.draft.da;
+  $("#tx").oninput=$("#da").oninput=()=>{S.draft={tx:$("#tx").value,da:$("#da").value};live()};
+  paintResp();live()}
+function paintResp(){document.querySelectorAll('[data-a="resp"]').forEach(b=>b.classList.toggle("sel",S.resp[+b.dataset.i]===+b.dataset.v));const n=S.resp.filter(x=>x>=0).length;if($("#cnt"))$("#cnt").textContent=n+" / "+NQ+" respondidas"}
+function live(){const el=$("#live");if(!el)return;const f=freq(delTema()),m=[...pals(S.draft.tx+" "+S.draft.da,S.tema)].filter(w=>f.get(w));el.innerHTML=m.length?m.slice(0,9).map(w=>`<span class="${f.get(w)>=2?"a":"c"}">#${esc(lab(w))} x${f.get(w)}</span>`).join("  "):`<span class="g">escribe y descubre con qué ideas de otras personas se cruza</span>`}
+
+/* ---------- APORTES ---------- */
+function resalta(t,f){return esc(t).split(" ").map(w=>{const cw=w.replace(/[^\p{L}]/gu,"");return cw.length>=4&&!STOP.has(norm(cw.toLowerCase()))&&(f.get(raiz(cw))||0)>=2?`<mark>${w}</mark>`:w}).join(" ")}
+function card(a,n,f,b){
+  const vs=S.vi.filter(v=>v.tema===S.tema&&(v.a==="a:"+a.id||v.b==="a:"+a.id)),ks=[...P(a)].filter(w=>f.get(w)>=2).slice(0,6);
+  return `<article class="card"><div class="mono g">#${n} · ${new Date(a.t).toLocaleString("es-CO",{dateStyle:"short",timeStyle:"short"})} ${b&&a.t>b.t?'<span class="tag">NUEVO</span>':""}${a.demo?' <span class="tag">EJEMPLO</span>':""}</div>
+  <p>${a.texto?resalta(a.texto,f):'<span class="g">(solo respondió preguntas)</span>'}</p>${a.dato?`<p class="mono c">DATO: ${esc(a.dato.slice(0,90))}</p>`:""}
+  <div>${PREG.map((_,i)=>{const r=(a.resp||[])[i];return `<span class="sq ${r===1?"s":r===0?"n":""}" title="${esc(pq(i))}">${r===1?"S":r===0?"N":"-"}</span>`}).join("")}${vs.length?`<span class="mono y" title="${esc(vs.map(v=>v.nota).filter(Boolean).join(" | "))}">VINC x${vs.length}</span>`:""}</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn a" data-a="leer" data-id="${esc(a.id)}">LEER</button><button class="btn y ${S.selA==="a:"+a.id?"fill":""}" data-a="conectar" data-id="a:${esc(a.id)}">CONECTAR</button></div>
+  <div>${ks.map(w=>`<button class="kw" data-a="kw" data-w="${esc(lab(w))}">#${esc(lab(w))}</button>`).join("")}</div></article>`}
+function gridHTML(){const todos=delTema(),f=freq(todos),q=norm(S.buscar.toLowerCase()),b=BASE[S.tema];
+  const L=todos.filter(a=>!q||norm(((a.texto||"")+" "+(a.dato||"")).toLowerCase()).includes(q)||[...P(a)].some(w=>w.includes(q)));
+  if($("#nb"))$("#nb").textContent=L.length+" DE "+todos.length+" APORTES";
+  return L.length?L.slice().reverse().map(a=>card(a,todos.indexOf(a)+1,f,b)).join(""):`<p class="mono g">NINGÚN APORTE COINCIDE CON LA BÚSQUEDA</p>`}
+const pintaGrid=()=>{$("#grid").innerHTML=gridHTML()};
+function aportes(A){if(!delTema().length)return vacio(A);
+  A.innerHTML=`<div class="bar"><input id="bq" value="${esc(S.buscar)}" placeholder="buscar una palabra..." aria-label="Buscar"><span id="nb" class="mono g"></span><button class="btn m" data-a="kw" data-w="">LIMPIAR</button><button class="btn a" data-a="leerUlt">LEER ÚLTIMO</button></div><div id="grid" class="grid"></div>`;
+  $("#bq").oninput=e=>{S.buscar=e.target.value;pintaGrid()};pintaGrid()}
+
+/* ---------- RED ---------- */
+const G={nodes:[],edges:[],drag:null,hov:null,raf:0};
+const rnd=()=>(Math.random()-.5)*400,rad=n=>n.centro?40:n.ap?9+3*n.c:6+7*Math.sqrt(n.c);
+function build(){
+  const L=delTema(),f=freq(L),b=BASE[S.tema],idx={};
+  G.nodes=[{id:"t",w:S.tema,c:L.length,centro:1,x:0,y:0,vx:0,vy:0}];G.edges=[];
+  if(S.modoRed==="PALABRAS"){
+    ord(f).slice(0,45).forEach(w=>{const n={id:"p:"+w,w:lab(w),c:f.get(w),x:rnd(),y:rnd(),vx:0,vy:0,nuevo:!!b&&f.get(w)>=2&&!(b.claves||[]).includes(w)};idx[n.id]=G.nodes.push(n)-1});
+    const pe=new Map();
+    L.forEach(a=>{const ids=[...P(a)].filter(w=>idx["p:"+w]).map(w=>idx["p:"+w]).sort((x,y)=>x-y);for(let i=0;i<ids.length;i++)for(let j=i+1;j<ids.length;j++){const k=ids[i]*1000+ids[j];pe.set(k,(pe.get(k)||0)+1)}});
+    pe.forEach((w,k)=>{const i=Math.floor(k/1000),j=k%1000;if(G.nodes[i].c>=2||G.nodes[j].c>=2)G.edges.push({i,j,w})});
+    G.nodes.forEach((n,i)=>{if(i&&n.c>=2)G.edges.push({i:0,j:i,w:1,ce:1})});
+  }else{
+    L.slice(-60).forEach(a=>{const n={id:"a:"+a.id,w:(a.texto||"(respuestas)").slice(0,22),c:[...P(a)].filter(w=>f.get(w)>=2).length,ap:a,x:rnd(),y:rnd(),vx:0,vy:0,nuevo:!!b&&a.t>b.t};idx[n.id]=G.nodes.push(n)-1});
+    for(let i=1;i<G.nodes.length;i++)for(let j=i+1;j<G.nodes.length;j++){let s=0;P(G.nodes[i].ap).forEach(w=>{if(f.get(w)>=2&&P(G.nodes[j].ap).has(w))s++});if(s)G.edges.push({i,j,w:s})}
+    for(let i=1;i<G.nodes.length;i++)G.edges.push({i:0,j:i,w:1,ce:1});
+  }
+  vincT().forEach(v=>{const i=idx[v.a],j=idx[v.b];if(i!=null&&j!=null)G.edges.push({i,j,w:3,u:1,nota:v.nota})})}
+function step(W,H){const N=G.nodes,n=N.length;
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const a=N[i],b=N[j],dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy+30,d=Math.sqrt(d2),f=3200/d2;a.vx+=dx/d*f;a.vy+=dy/d*f;b.vx-=dx/d*f;b.vy-=dy/d*f}
+  G.edges.forEach(e=>{const a=N[e.i],b=N[e.j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)+.01,k=(d-(e.ce?200:e.u?140:100))*(e.ce?.004:e.u?.02:.01*Math.min(e.w,3));a.vx+=dx/d*k;a.vy+=dy/d*k;b.vx-=dx/d*k;b.vy-=dy/d*k});
+  N.forEach(a=>{if(a.centro){a.x=a.y=0;return}if(a===G.drag)return;a.vx=cl((a.vx-a.x*.002)*.82,-8,8);a.vy=cl((a.vy-a.y*.002)*.82,-8,8);a.x=cl(a.x+a.vx,-W/2+30,W/2-30);a.y=cl(a.y+a.vy,-H/2+40,H/2-40)})}
+const ncol=n=>n.centro?C("paper"):n.ap?(sies(n.ap)<0?C("gris"):mix(C("mag"),C("acid"),sies(n.ap))):n.c>=3?C("mag"):n.c===2?C("acid"):C("gris");
+function frame(){const cv=$("#cv");if(!cv||S.v!=="red")return;const W=cv.clientWidth,H=cv.clientHeight,c=cv.getContext("2d");step(W,H);c.clearRect(0,0,W,H);c.save();c.translate(W/2,H/2);const hov=G.hov,N=G.nodes;
+  G.edges.forEach(e=>{const a=N[e.i],b=N[e.j];c.globalAlpha=!hov||a===hov||b===hov?1:.3;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);
+    if(e.u){c.strokeStyle=C("yel");c.lineWidth=3;c.setLineDash([9,7]);c.stroke();c.setLineDash([]);c.fillStyle=C("yel");c.beginPath();c.arc((a.x+b.x)/2,(a.y+b.y)/2,4.5,0,7);c.fill()}
+    else{c.strokeStyle=e.ce?C("gris"):C("cyan");c.globalAlpha*=e.ce?.3:Math.min(.8,.15+e.w*.15);c.lineWidth=.8+e.w*.7;c.stroke()}});
+  c.globalAlpha=1;
+  N.forEach(n=>{const r=rad(n),col=ncol(n),br=n.centro||n.ap||n.c>=2;
+    if(br){c.fillStyle=col;c.globalAlpha=.15;[27,18,9].forEach(g=>{c.beginPath();c.arc(n.x,n.y,r+g,0,7);c.fill()})}
+    c.globalAlpha=br?1:.55;c.fillStyle=col;c.beginPath();c.arc(n.x,n.y,r,0,7);c.fill();c.globalAlpha=1;
+    if(n.nuevo){c.strokeStyle=C("yel");c.lineWidth=2;c.beginPath();c.arc(n.x,n.y,r+9+3*Math.sin(Date.now()/130),0,7);c.stroke()}
+    if(S.selA===n.id){c.strokeStyle=C("yel");c.lineWidth=4;c.beginPath();c.arc(n.x,n.y,r+12,0,7);c.stroke()}
+    c.textAlign="center";c.fillStyle=col;
+    if(n.centro){c.fillStyle=C("paper");c.font='900 20px "Arial Black",Arial';c.fillText(n.w.toUpperCase().slice(0,18),n.x,n.y+r+22)}
+    else if(!n.ap&&(n.c>=2||n===hov)){c.font=`900 ${Math.min(28,11+n.c*3)}px "Arial Black",Arial`;c.fillText(n.w,n.x,n.y-r-10)}});
+  c.restore();G.raf=requestAnimationFrame(frame)}
+const hit=p=>{let h=null;G.nodes.forEach(n=>{if(Math.hypot(p.x-n.x,p.y-n.y)<rad(n)+6)h=n});return h};
+function red(A){
+  const L=delTema();if(!L.length)return vacio(A);
+  const ks=claves(L),f=freq(L),d=diff();
+  A.innerHTML=`<div class="split"><div><canvas id="cv" role="img" aria-label="Red de ideas"></canvas><div id="tip"></div></div>
+  <div class="panel"><h3>PUNTOS CLAVE</h3>${ks.length?ks.slice(0,6).map(w=>`<div><b class="${f.get(w)>=3?"m":"a"}" style="font:900 16px 'Arial Black',Arial">${esc(lab(w))}</b> <span class="mono">x${f.get(w)}</span><i style="display:block;height:6px;background:var(--${f.get(w)>=3?"mag":"acid"});width:${100*f.get(w)/L.length}%"></i></div>`).join(""):`<p class="g">Todavía ninguna palabra se repite. Invita a más personas a aportar.</p>`}
+  <h3 class="y">DESDE TU ÚLTIMA VISITA</h3><p class="mono" style="margin:0">${d.primera?"Primera vez en este tema. La próxima vez verás qué cambió.":!d.hay?"Sin cambios todavía: la red sigue igual.":`+${d.da} aportes · +${d.dv} vínculos${d.nc.length?"<br>Nuevos puntos clave: "+d.nc.slice(0,4).map(lab).join(", "):""}`}</p>
+  <button class="btn c" data-a="vista">VISTA: ${S.modoRed}</button><button class="btn y ${S.conectando?"fill":""}" data-a="modoCon">${S.conectando?"CONECTANDO...":"CONECTAR IDEAS"}</button>
+  <button class="btn m" data-a="go" data-v="participar">SUMAR UN APORTE ›</button>
+  <p class="mono g" style="margin:0">${S.modoRed==="APORTES"?"color = % de SÍ (magenta NO, verde SÍ)":"arrastra los nodos para explorar"}</p></div></div>`;
+  const cv=$("#cv"),dpr=window.devicePixelRatio||1;cv.width=cv.clientWidth*dpr;cv.height=cv.clientHeight*dpr;cv.getContext("2d").setTransform(dpr,0,0,dpr,0,0);
+  const ptr=e=>{const r=cv.getBoundingClientRect();return{x:e.clientX-r.left-r.width/2,y:e.clientY-r.top-r.height/2}};
+  cv.onpointermove=e=>{const p=ptr(e);if(G.drag){G.drag.x=p.x;G.drag.y=p.y;G.drag.vx=G.drag.vy=0}const h=hit(p);G.hov=h;
+    $("#tip").textContent=!h||h.centro?"":h.ap?(h.ap.texto||"(solo respondió preguntas)").slice(0,140)+(sies(h.ap)>=0?`  [${Math.round(sies(h.ap)*100)}% SÍ]`:""):`“${h.w}” aparece en ${h.c} ${h.c===1?"aporte":"aportes"}`+(S.conectando?"  >> clic para conectar":"")};
+  cv.onpointerdown=e=>{const h=hit(ptr(e));if(!h||h.centro)return;if(S.conectando)selec(h.id);else{G.drag=h;cv.setPointerCapture(e.pointerId)}};
+  cv.onpointerup=()=>G.drag=null;
+  build();cancelAnimationFrame(G.raf);G.raf=requestAnimationFrame(frame)}
+function nombre(id){if(id.startsWith("p:"))return lab(id.slice(2));const a=S.ap.find(x=>"a:"+x.id===id);return a?(a.texto||"(respuestas)").slice(0,34):id}
+function selec(id){if(!S.selA){S.selA=id;toast("Elige la segunda idea");if(S.v!=="red")render()}else if(S.selA===id){S.selA=null;if(S.v!=="red")render()}else modalVinculo(S.selA,id)}
+function modalVinculo(a,b){const m=$("#modal");m.style.display="grid";
+  m.innerHTML=`<div class="box" role="dialog" aria-label="Conectar dos ideas"><b class="mono y">CONECTAR DOS IDEAS</b><p style="margin:0">${esc(nombre(a))} <b class="y">⟷</b> ${esc(nombre(b))}</p><label class="mono" for="nota">¿POR QUÉ SE RELACIONAN? (opcional)</label><input id="nota" maxlength="140" style="border-color:var(--yel)"><div style="display:flex;gap:10px"><button class="btn a fill" id="ok">GUARDAR VÍNCULO</button><button class="btn m" id="no">CANCELAR</button></div></div>`;
+  const cerrar=()=>{m.style.display="none";m.innerHTML="";S.selA=null;if(S.v==="red"||S.v==="aportes")render()};
+  $("#nota").focus();$("#no").onclick=cerrar;$("#nota").onkeydown=e=>{if(e.key==="Enter")$("#ok").click();if(e.key==="Escape")cerrar()};
+  $("#ok").onclick=async()=>{const ex=vincT().some(v=>(v.a===a&&v.b===b)||(v.a===b&&v.b===a));if(!ex){const nota=$("#nota").value.trim();m.style.display="none";m.innerHTML="";S.selA=null;await guardar("vinculos",{id:uid(),tema:S.tema,a,b,nota,t:Date.now()});burst();toast("IDEAS CONECTADAS");render()}else{toast("Esas ideas ya están conectadas");cerrar()}}}
+
+/* ---------- DATOS ---------- */
+function datos(A){const L=delTema();if(!L.length)return vacio(A);
+  const si=Array(NQ).fill(0),no=Array(NQ).fill(0);let ts=0,tr=0;
+  L.forEach(a=>(a.resp||[]).forEach((r,i)=>{if(r===1){si[i]++;ts++;tr++}else if(r===0){no[i]++;tr++}}));
+  const f=freq(L),ws=ord(f),nc=ws.filter(w=>f.get(w)>=2).length,pct=tr?Math.round(100*ts/tr):0,top=ws.length?f.get(ws[0]):1,R=52,Cc=2*Math.PI*R;
+  let qd=-1,qc=-1,md=9,mc=-1;for(let q=0;q<NQ;q++){const t=si[q]+no[q];if(t<2)continue;const d=Math.abs(si[q]/t-.5);if(d<md){md=d;qd=q}if(d>mc){mc=d;qc=q}}
+  const pm=new Map();L.forEach(a=>{const k=[...P(a)].filter(w=>f.get(w)>=2).sort();for(let i=0;i<k.length;i++)for(let j=i+1;j<k.length;j++){const x=k[i]+"|"+k[j];pm.set(x,(pm.get(x)||0)+1)}});
+  let bp=null,bc=0;pm.forEach((v,k)=>{if(v>bc){bc=v;bp=k}});
+  const pc=q=>Math.round(100*si[q]/(si[q]+no[q])),lec=[qd>=0?`Divide más: Q${qd+1} (${pc(qd)}% SÍ)`:"",qc>=0&&qc!==qd?`Más consenso: Q${qc+1} (${pc(qc)}% SÍ)`:"",bp?`Par más frecuente: ${bp.split("|").map(lab).join(" + ")} (x${bc})`:""].filter(Boolean);
+  A.innerHTML=`<div class="cols" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+  <section><div class="big-n a">${L.length}</div><p class="mono">APORTES SOBRE ${esc(S.tema.toUpperCase())}</p><div class="big-n m">${nc}</div><p class="mono">PUNTOS CLAVE (PALABRAS REPETIDAS)</p>
+  <svg viewBox="0 0 220 130" role="img" aria-label="${pct}% de respuestas SÍ"><circle cx="65" cy="65" r="${R}" fill="none" stroke="var(--gris)" stroke-width="18" opacity=".4"/><circle cx="65" cy="65" r="${R}" fill="none" stroke="var(--mag)" stroke-width="18" opacity="${tr?1:0}"/><circle cx="65" cy="65" r="${R}" fill="none" stroke="var(--acid)" stroke-width="18" stroke-dasharray="${tr?Cc*ts/tr:0} ${Cc}" transform="rotate(-90 65 65)"/><text x="65" y="72" text-anchor="middle" fill="var(--paper)" font-size="22" font-weight="900">${pct}%</text><text x="135" y="55" fill="var(--acid)" font-size="13">SÍ ${ts}</text><text x="135" y="75" fill="var(--mag)" font-size="13">NO ${tr-ts}</text></svg></section>
+  <section class="bars"><h3>PALABRAS MÁS REPETIDAS</h3>${ws.slice(0,10).map(w=>`<div class="r"><span>${esc(lab(w).slice(0,13))}</span><i style="width:${Math.max(2,100*f.get(w)/top)}%;background:var(--${f.get(w)>=3?"mag":f.get(w)===2?"acid":"gris"})"></i><span class="mono">x${f.get(w)}</span></div>`).join("")}</section>
+  <section><h3>SÍ / NO POR PREGUNTA</h3>${PREG.map((_,q)=>{const t=si[q]+no[q];return `<div style="font-size:13px">${esc(pq(q))}</div><div class="yn">${t?`<b style="width:${100*si[q]/t}%;background:var(--acid)">${si[q]?"SÍ "+si[q]:""}</b><b style="width:${100*no[q]/t}%;background:var(--mag)">${no[q]?"NO "+no[q]:""}</b>`:`<b style="width:100%;background:var(--gris)">sin respuestas</b>`}</div>`}).join("")}
+  <div class="panel" style="border-color:var(--yel)"><b class="mono y">LECTURA AUTOMÁTICA</b>${lec.length?lec.map(x=>`<span>${esc(x)}</span>`).join(""):"<span class='g'>Se necesitan más respuestas para leer tendencias.</span>"}</div></section></div>
+  <h3 style="margin-top:28px">MOSAICO // CADA PUNTO ES UN APORTE (verde = más SÍ, magenta = más NO)</h3><div class="dots">${L.slice().reverse().map(a=>{const s=sies(a);return `<i title="${esc((a.texto||"(solo respondió preguntas)").slice(0,120))}" style="background:${s<0?C("gris"):mix(C("mag"),C("acid"),s)}"></i>`}).join("")}</div>`}
+
+/* ---------- TIEMPO ---------- */
+function tiempo(A){const L=delTema();if(L.length<2){A.innerHTML=`<h2 style="text-align:center;padding:60px 0">SE NECESITAN AL MENOS 2 APORTES PARA VER EL TIEMPO</h2>`;return}
+  const f=freq(L),ws=ord(f).slice(0,6),N=L.length,mx=Math.max(1,f.get(ws[0])),pal=["mag","acid","cyan","yel","paper","gris"],X=i=>60+i*(640/(N-1)),Y=c=>270-c*(240/mx);
+  const lines=ws.map((w,k)=>{let c=0;const pts=L.map((a,i)=>{if(P(a).has(w))c++;return[X(i),Y(c)]});return `<polyline fill="none" stroke="var(--${pal[k]})" stroke-width="3" points="${pts.map(p=>p.join(",")).join(" ")}"/><text x="${pts[N-1][0]+6}" y="${pts[N-1][1]+(k%2?12:-4)}" fill="var(--${pal[k]})" font-size="12">${esc(lab(w))}</text>`}).join("");
+  const grid=[0,1,2,3,4].map(g=>`<line x1="60" x2="700" y1="${30+g*60}" y2="${30+g*60}" stroke="var(--gris)" opacity=".3"/><text x="52" y="${34+g*60}" text-anchor="end" fill="var(--gris)" font-size="11">${Math.round(mx*(4-g)/4)}</text>`).join("");
+  const bw=Math.max(3,640/N-2),pol=L.map((a,i)=>{const s=sies(a),h=s<0?5:Math.max(4,110*s);return `<rect x="${X(i)-bw/2+(i===N-1?-bw/2:0)}" y="${130-h}" width="${bw}" height="${h}" fill="${s<0?C("gris"):mix(C("mag"),C("acid"),s)}"><title>#${i+1} ${s<0?"sin respuestas":Math.round(s*100)+"% SÍ"}</title></rect>`}).join("");
+  const bs=ws.length?ord(f).slice(0,18).map(w=>({w,c:f.get(w),r:13+11*Math.sqrt(f.get(w))})):[],pl=[];
+  bs.forEach(b=>{let ang=0,rd=0;for(let k=0;k<4000;k++){const x=Math.cos(ang)*rd,y=Math.sin(ang)*rd;if(pl.every(p=>Math.hypot(p.x-x,p.y-y)>=p.r+b.r+4)){b.x=x;b.y=y;pl.push(b);break}ang+=.35;rd+=.18}});
+  const e=pl.length?pl:[{x:0,y:0,r:10}],x0=Math.min(...e.map(p=>p.x-p.r)),x1=Math.max(...e.map(p=>p.x+p.r)),y0=Math.min(...e.map(p=>p.y-p.r)),y1=Math.max(...e.map(p=>p.y+p.r));
+  A.innerHTML=`<div class="cols" style="grid-template-columns:2fr 1fr"><section><h3>CRECIMIENTO DE LAS PALABRAS (acumulado aporte a aporte)</h3><svg viewBox="0 0 780 300" role="img" aria-label="Crecimiento acumulado de palabras">${grid}${lines}<text x="60" y="292" fill="var(--gris)" font-size="11">APORTE 1</text><text x="700" y="292" text-anchor="end" fill="var(--gris)" font-size="11">APORTE ${N}</text></svg>
+  <h3 style="margin-top:20px">POLARIDAD POR APORTE (alto = más SÍ)</h3><svg viewBox="0 0 780 140" role="img" aria-label="Polaridad por aporte">${pol}<line x1="50" x2="710" y1="130" y2="130" stroke="var(--gris)"/></svg></section>
+  <section><h3>NUBE DE IDEAS</h3><svg viewBox="${x0-8} ${y0-8} ${x1-x0+16} ${y1-y0+16}" role="img" aria-label="Nube de ideas">${pl.map(b=>{const col=b.c>=3?"mag":b.c===2?"acid":"cyan";return `<circle cx="${b.x}" cy="${b.y}" r="${b.r}" fill="var(--${col})" opacity=".85"><title>${esc(lab(b.w))}: ${b.c}</title></circle>${b.r>26?`<text x="${b.x}" y="${b.y+4}" text-anchor="middle" fill="var(--on)" font-size="${Math.min(15,b.r*.42)}">${esc(lab(b.w).slice(0,11))}</text>`:""}`}).join("")}</svg></section></div>`}
+
+/* ---------- acciones ---------- */
+function leer(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="es-CO";speechSynthesis.speak(u)}catch(e){toast("No hay voz disponible")}}
+async function csv(){const L=delTema(),f=freq(L),rows=[["id","tema","fecha","texto","dato",...PREG.map((_,i)=>"Q"+(i+1)),"pct_si","palabras_clave"]];
+  L.forEach(a=>{const s=sies(a);rows.push([a.id,a.tema,new Date(a.t).toISOString(),a.texto,a.dato,...PREG.map((_,i)=>a.resp[i]===1?"SI":a.resp[i]===0?"NO":""),s<0?"":Math.round(s*100),[...P(a)].filter(w=>f.get(w)>=2).map(lab).join("|")])});
+  const data="\ufeff"+rows.map(r=>r.map(c=>'"'+String(c??"").replace(/"/g,'""')+'"').join(",")).join("\n");
+  try{const d=await claude.use("downloads");if(d){await d.save({filename:"aportes_"+norm(S.tema).replace(/\W+/g,"_")+".csv",data});return}}catch(e){}
+  toast("La descarga no está disponible en este navegador")}
+const ACT={
+  go:t=>go(t.dataset.v),
+  tema:t=>{$("#tema").value=t.dataset.t;$("#tema").dispatchEvent(new Event("input"))},
+  entrar:()=>{const v=$("#tema").value.trim().toLowerCase();if(!v)return;S.tema=v;LS.s("cc_tema",v);go("participar")},
+  ver:t=>{S.tema=t.dataset.t;LS.s("cc_tema",S.tema);go("red")},
+  ciclo:()=>{const ts=temas();if(!ts.length)return;S.tema=ts[(ts.indexOf(S.tema)+1)%ts.length];LS.s("cc_tema",S.tema);render()},
+  resp:t=>{S.resp[+t.dataset.i]=+t.dataset.v;paintResp()},
+  enviar:async()=>{const tx=S.draft.tx.trim(),da=S.draft.da.trim();if(!tx&&!da&&S.resp.every(x=>x<0)){toast("ESCRIBE O RESPONDE ALGO PRIMERO");return}
+    const ok=await guardar("aportes",{id:uid(),tema:S.tema,texto:tx,dato:da,t:Date.now(),resp:[...S.resp]});S.draft={tx:"",da:""};S.resp=Array(NQ).fill(-1);burst();if(ok)toast("APORTE REGISTRADO // MIRA CÓMO SE CONECTA");go("red")},
+  kw:t=>{S.buscar=t.dataset.w;if(S.v!=="aportes")return;render()},
+  leer:t=>{const a=S.ap.find(x=>x.id===t.dataset.id);if(a)leer(a.texto+". "+(a.dato||""))},
+  leerUlt:()=>{const L=delTema();if(L.length)leer(L[L.length-1].texto+". "+(L[L.length-1].dato||""))},
+  conectar:t=>selec(t.dataset.id),
+  modoCon:()=>{S.conectando=!S.conectando;S.selA=null;render()},
+  vista:()=>{S.modoRed=S.modoRed==="PALABRAS"?"APORTES":"PALABRAS";S.selA=null;render()},
+  sembrar:async()=>{if(S.ap.some(a=>a.demo)){pend.ap=pend.ap.filter(a=>!a.demo);pend.vi=pend.vi.filter(a=>!a.demo);LS.s("cc_ap",pend.ap);LS.s("cc_vi",pend.vi);merge();render();return}
+    const tx=["El bioarte mezcla células, bacterias y procesos vivos para crear obras que cuestionan los límites de la ciencia.","Me interesa el bioarte porque une la ciencia y el arte para hablar de ecología y del cuerpo.","La tecnología permite que el arte vivo sea accesible, pero hay dilemas éticos con los organismos.","Trabajar con organismos vivos obliga a pensar en ética, cuidado y responsabilidad.","Bioarte es ciencia hecha sensible: bacterias, hongos, datos y tecnología para crear experiencias.","Quisiera hacer una instalación con hongos y sensores que reaccione al público."],
+      rs=[[1,1,1,1,1],[0,1,1,1,1],[1,1,0,1,1],[0,1,1,0,1],[1,1,1,1,0],[0,1,1,1,1]],now=Date.now();
+    for(let i=0;i<6;i++)await guardar("aportes",{id:"demo-"+i,tema:"bioarte",texto:tx[i],dato:"",t:now-(6-i)*72e5,resp:rs[i]},true);
+    await guardar("vinculos",{id:"demo-v",tema:"bioarte",a:"p:ciencia",b:"p:organismo",nota:"la ciencia necesita cuidar a los organismos con los que trabaja",t:now},true);
+    S.tema="bioarte";render()},
+  csv,
+  hc:()=>{const h=document.documentElement;h.dataset.hc=h.dataset.hc==="1"?"0":"1";LS.s("cc_hc",h.dataset.hc);render()},
+  fs:t=>{const v=cl((+getComputedStyle(document.documentElement).getPropertyValue("--fs")||1)+ +t.dataset.d,.9,1.4);document.documentElement.style.setProperty("--fs",v.toFixed(1));LS.s("cc_fs",v)},
+  kiosco:()=>entrarKiosco()
+};
+document.addEventListener("click",e=>{const t=e.target.closest("[data-a]");if(t&&ACT[t.dataset.a])ACT[t.dataset.a](t)});
+
+/* ---------- kiosco / proyección ---------- */
+let kT=0,kI=0,act=Date.now(),kStart=0;
+function entrarKiosco(){if(S.kiosco||!S.ap.length)return;S.kiosco=true;kStart=Date.now();document.body.classList.add("kiosk");const seq=["red","datos","tiempo","aportes"];kI=0;go(seq[0]);kT=setInterval(()=>{kI=(kI+1)%4;go(seq[kI])},14000)}
+function salirKiosco(){if(!S.kiosco||Date.now()-kStart<500)return;S.kiosco=false;clearInterval(kT);document.body.classList.remove("kiosk");act=Date.now();render()}
+["pointerdown","keydown"].forEach(ev=>addEventListener(ev,()=>{act=Date.now();salirKiosco()}));
+addEventListener("pointermove",()=>act=Date.now());
+setInterval(()=>{if(!S.kiosco&&Date.now()-act>9e4&&S.ap.length&&!(document.activeElement&&["INPUT","TEXTAREA"].includes(document.activeElement.tagName)))entrarKiosco()},5000);
+setInterval(guardarVisita,3e4);addEventListener("pagehide",guardarVisita);
+
+/* ---------- arranque ---------- */
+document.documentElement.dataset.hc=LS.g("cc_hc","0");document.documentElement.style.setProperty("--fs",LS.g("cc_fs",1));
+merge();render();
+(async()=>{
+  try{if(window.claude&&claude.use)DB=await claude.use("db")}catch(e){}
+  if(!DB){cargado=true;merge();render();return}
+  let n=0;const listo=()=>{if(++n>=2){cargado=true}};
+  const ok=(set)=>s=>{set(s.docs.map(d=>({...d.data(),id:d.id})));merge();listo();refresh()},bad=()=>{listo();refresh()};
+  try{DB.collection("aportes").onSnapshot(ok(x=>dbAp=x),bad);DB.collection("vinculos").onSnapshot(ok(x=>dbVi=x),bad)}catch(e){DB=null;cargado=true;render()}
+  setTimeout(()=>{cargado=true},10000)
+})();
+</script>
+</body>
+</html>
